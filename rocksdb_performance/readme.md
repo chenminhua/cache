@@ -4,6 +4,14 @@ value size is 1000
 100000 records put in 689938 usec, 6.89938 usec average
 100000 records get in 168648 usec, 1.68648 usec average
 
+./test_batch_write -t 100000 -b 100
+total record number is 100000
+value size is 1000
+batch size is 100
+100000 records batch put in 149552 usec, 1.49552 usec average, throughput is 668.664 MB/s, rps is 668664
+
+
+
 ./ingest_data -t 100000 -s 1000
 total record number is 100000
 value size is 1000
