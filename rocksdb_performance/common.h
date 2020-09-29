@@ -10,13 +10,14 @@ using namespace boost::program_options;
 
 const std::string keyPrefix = std::string(99, 'a');
 
-variables_map parse(int argc, char** argv, options_description* additional)
+variables_map parse(int argc, char **argv, options_description *additional)
 {
     int total, valueSize;
     options_description desc("Allowed options");
     desc.add_options()("help,h", "produce help message")("total,t", value<int>(&total)->default_value(10000), "total record number")("size,s", value<int>(&valueSize)->default_value(1000), "value size");
 
-    if (additional) {
+    if (additional)
+    {
         desc.add(*additional);
     }
 
@@ -24,7 +25,8 @@ variables_map parse(int argc, char** argv, options_description* additional)
     store(parse_command_line(argc, argv, desc), vm);
     notify(vm);
 
-    if (vm.count("help")) {
+    if (vm.count("help"))
+    {
         std::cout << desc << std::endl;
         exit(1);
     }
@@ -35,9 +37,9 @@ variables_map parse(int argc, char** argv, options_description* additional)
     return vm;
 }
 
-DB* opendb(bool readonly = false, const std::string& dir = "/mnt/rocksdb", int ttl = 0)
+DB *opendb(bool readonly = false, const std::string &dir = "/Users/admin/tmp/rocksdb", int ttl = 0)
 {
-    DB* db;
+    DB *db;
     Options options;
     // Optimize RocksDB. This is the easiest way to get RocksDB to perform well
     options.IncreaseParallelism();
@@ -49,15 +51,17 @@ DB* opendb(bool readonly = false, const std::string& dir = "/mnt/rocksdb", int t
     Status s;
     if (readonly)
         s = DB::OpenForReadOnly(options, dir, &db);
-    else if (ttl) {
-        rocksdb::DBWithTTL* db_ttl;
+    else if (ttl)
+    {
+        rocksdb::DBWithTTL *db_ttl;
         s = rocksdb::DBWithTTL::Open(options, dir, &db_ttl, ttl);
         db = db_ttl;
     }
     else
         s = DB::Open(options, dir, &db);
 
-    if (!s.ok()) {
+    if (!s.ok())
+    {
         std::cout << "open " << dir << ":" << s.ToString() << std::endl;
     }
     assert(db);
